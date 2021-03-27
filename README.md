@@ -3,10 +3,3 @@
 ## Member's Name
 - Muhammad Naufal Alif Islami (05111942000008)
 
-## Number 1
-
-
-## Number 2
-
-
-## Number 3
