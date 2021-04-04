@@ -144,11 +144,46 @@ c). TokoShiSop focuses on three customer segments, among others: Home Offices, C
      
 d). TokoShiSop divides the sales region into four parts: Central, East, South, and West. Manis wants to find the region that has the least total profit and the total profit of that region.
 
-     #2d
+     
+     
+     
+<p align="center"><img width="206" alt="Screen Shot 2021-04-04 at 10 42 02" src="https://user-images.githubusercontent.com/73428164/113497921-662c1300-9532-11eb-87d6-194d7555b5f3.png"></p>
+
+     for 2d numbers, like previous numbers use LC_ALL = C to set output operation to default, call awk function, use tab separator field, 
+     and begin end. entering the problem, we want to find the region with the lowest profit, meaning we use an array to store each data 
+     region with the profit added for each region appears, in this case the array is in reg [$ 13] + = $ 21, and why use NR > 1, to avoid 
+     the first row having no value but only attributes. 
+     
+     <p align="center"><img width="167" alt="Screen Shot 2021-04-04 at 10 43 07" src="https://user-images.githubusercontent.com/73428164/113497942-8c51b300-9532-11eb-82d6-1609e20cf160.png">
+</p>
+    
+     Entering the end function, we declare the variable min with a large value (in this 
+     case the number that I declare is the largest INT number (INT_MAX). This is to initialize the number for comparison.then we do 
+     loopingg with the variable a until there is a lot of data in the reg variable, Then if the value in reg [index a] is smaller than the 
+     min variable, then the variable will be replaced by reg [index a] and we will create a variable to hold the name in the loop to a, 
+     namely the regi variable.
+
+
+<p align="center"><img width="716" alt="Screen Shot 2021-04-04 at 10 43 54" src="https://user-images.githubusercontent.com/73428164/113497955-a7bcbe00-9532-11eb-9286-e6509ad963f6.png"> <img width="185" alt="Screen Shot 2021-04-04 at 10 44 11" src="https://user-images.githubusercontent.com/73428164/113497958-b2775300-9532-11eb-9cb6-c4318b93a602.png"></p>
+
+     and finally we will issue or print by calling the regi variable to issue the region name and the min variable for the profit.
+     
+     and we get the data from TokoShiSop.tsv-report and passing it to Hasil.txt without overwrite the data that has already exist in 
+     Hasil.txt
+     
+     and here's for the result:
+     
+<p align="center"><img width="714" alt="Screen Shot 2021-04-04 at 10 45 25" src="https://user-images.githubusercontent.com/73428164/113497978-de92d400-9532-11eb-9588-b8a66c8497f5.png"></p>
+
      
 e). You are expected to be able to create a script that will produce a file “Hasil.txt” 
 
-     #2e
+     For the all file that produce in Hasil.txt
+     
+     here's the Hasil.txt : 
+     
+<p align="center"><img width="797" alt="Screen Shot 2021-04-04 at 10 46 41" src="https://user-images.githubusercontent.com/73428164/113497988-0c781880-9533-11eb-81d2-1fd9d48bcd49.png"></p>
+
      
 ## Question 3:
 Kuuhaku is a person who really likes to collect digital photos, but Kuuhaku is also a lazy person so he doesn't want to bother looking for photos, besides that he is also shy, so he doesn't want anyone to see his collection, unfortunately, he has a friend named Steven who made being nosy his primary responsibility. Kuuhaku then had an idea, a way so that Steven won't be able to see his collection. To make his life easier, he is asking for your help. The idea is:
