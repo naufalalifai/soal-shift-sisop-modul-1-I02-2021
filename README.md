@@ -190,12 +190,70 @@ Kuuhaku is a person who really likes to collect digital photos, but Kuuhaku is a
 
 a) Make a script to download 23 images from "https://loremflickr.com/320/240/kitten" and save the logs to the file "Foto.log". Since the downloaded images are random, it is possible that the same image is downloaded more than once, therefore you have to delete the same image (no need to download new images to replace them). Then save the images with the name "Kumpulan_XX" with consecutive numbers without missing any number (example: Koleksi_01, Koleksi_02, ...)
 
-     #3a
+   In the question (a) we need to download 23 images from given link and save the logs to the file Foto.log.  First, we make a for loop until 23 iterations to download the        images. -O for output file and their filename. And -a to append each of downloaded image log to Foto.log.
+   
+     for ((img=1; img<=23; img=img+1))
+     do 
+          wget -O "Kumpulan_$img" https://loremflickr.com/320/240/kitten -a Foto.log
+          
+   Because we need to delete duplicate image, we find that there is a same line from Foto.log for duplicate image. First, we take the unique argument of the image and store it    to tmploc.txt. After that, store the last line of tmploc.txt to loc.txt because in tmploc.txt will be overwritten for each iteration.
+  
+     awk -F / '/Location: / {print $4}' Foto.log > tmploc.txt
+     awk 'END{print}' tmploc.txt >> loc.txt
      
+   To check whether there is duplicate or not we use 'uniq -d' to count only duplicate line.
+   
+     count=$(sort loc.txt | uniq -d)
+     
+   If there is duplicate. First, delete last line of loc.txt because we don’t need duplicate line. Then, remove the image file of current running iteration.
+     
+     if [[ $count>0 ]]
+     then
+          sed -i '$d' loc.txt
+          rm "Kumpulan_$img"
+     
+     fi
+     
+   Lastly, remove tmploc.txt and loc.txt.
+   
+     rm tmploc.txt
+     rm loc.txt
+   
 b) Because Kuuhaku is too lazy to run the script manually, he also asks you to run the script once a day at 8 o'clock in the evening for some specific dates every month, namely starting the 1st every seven days (1,8, ...), as well as from the 2nd once every four days (2,6, ...). To tidy it up, the downloaded images and logs are moved to a folder named the download date with the format "DD-MM-YYYY" (example: "13-03-2023").
 
-     #3b
-     <img width="645" alt="Screen Shot 2021-04-04 at 02 42 22" src="https://user-images.githubusercontent.com/73428164/113489610-6820b280-94ef-11eb-8577-8ed69967efda.png">
+   For question (b) we need to automatically download the images and logs and move it to folder named the download date. The first step is same with (a) 
+
+     #!/bin/bash
+
+     for ((img=1; img<=23; img=img+1))
+     do 
+          wget -O "Kumpulan_$img" https://loremflickr.com/320/240/kitten -a Foto.log
+
+          awk -F / '/Location: / {print $4}' Foto.log > tmploc.txt
+
+          awk 'END{print}' tmploc.txt >> loc.txt
+          count=$(sort loc.txt | uniq -d)
+
+          if [[ $count>0 ]]
+          then
+               sed -i '$d' loc.txt
+               rm "Kumpulan_$img"
+          fi
+     done 
+     rm tmploc.txt
+     rm loc.txt
+     
+  Make a folder with name of today’s date and move the images and Foto.log to the folder.
+  
+     mkdir /home/alifai/Documents/Shift1/$(date +%d-%m-%Y)
+     mv Kumpulan_* /home/alifai/Documents/Shift1/$(date +%d-%m-%Y)
+     mv Foto.log /home/alifai/Documents/Shift1/$(date +%d-%m-%Y)
+     
+  To automatically download the images and log we create a crontab.
+
+     0 20 1-31/7,2-31/4 * * /home/alifai/Documents/Shift1/soal3b.sh
+
+  It means “At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month from 2 through 31.”
 
 c) To prevent Kuuhaku getting bored with pictures of kittens, he also asked you to download rabbit images from "https://loremflickr.com/320/240/bunny". Kuuhaku asks you to download pictures of cats and rabbits alternately (the first one is free. example: 30th cat > 31st rabbit > 1st cat > ...). To distinguish between folders containing cat pictures and rabbit pictures, the folder names are prefixed with "Kucing_" or "Kelinci_" (example: "Kucing_13-03-2023").
      
