@@ -219,6 +219,11 @@ a) Make a script to download 23 images from "https://loremflickr.com/320/240/kit
      rm tmploc.txt
      rm loc.txt
    
+**RESULT**
+
+![3a (2)](https://user-images.githubusercontent.com/73649094/113501394-f37d6080-954e-11eb-95d6-437c69208bc7.png)
+
+
 b) Because Kuuhaku is too lazy to run the script manually, he also asks you to run the script once a day at 8 o'clock in the evening for some specific dates every month, namely starting the 1st every seven days (1,8, ...), as well as from the 2nd once every four days (2,6, ...). To tidy it up, the downloaded images and logs are moved to a folder named the download date with the format "DD-MM-YYYY" (example: "13-03-2023").
 
    For question (b) we need to automatically download the images and logs and move it to folder named the download date. The first step is same with (a) 
@@ -254,6 +259,10 @@ b) Because Kuuhaku is too lazy to run the script manually, he also asks you to r
      0 20 1-31/7,2-31/4 * * /home/alifai/Documents/Shift1/soal3b.sh
 
   It means "At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month from 2 through 31."
+  
+**RESULT**
+![3b](https://user-images.githubusercontent.com/73649094/113501535-152b1780-9550-11eb-99c8-edfabc1ba5bb.png)
+
 
 c) To prevent Kuuhaku getting bored with pictures of kittens, he also asked you to download rabbit images from "https://loremflickr.com/320/240/bunny". Kuuhaku asks you to download pictures of cats and rabbits alternately (the first one is free. example: 30th cat > 31st rabbit > 1st cat > ...). To distinguish between folders containing cat pictures and rabbit pictures, the folder names are prefixed with "Kucing_" or "Kelinci_" (example: "Kucing_13-03-2023").
      
@@ -311,6 +320,10 @@ Then, move the downloaded images and log to the folder.
 
      mv Kumpulan_* /home/alifai/Documents/Shift1/$dir
      mv Foto.log /home/alifai/Documents/Shift1/$dir
+     
+**RESULT**
+![3c](https://user-images.githubusercontent.com/73649094/113501547-2bd16e80-9550-11eb-9a5b-fcd9ac4d0093.png)
+
 
 d) To secure his Photo collection from Steven, Kuuhaku asked you to create a script that will move the entire folder to zip which is named "Koleksi.zip" and lock the zip with a password in the form of the current date with the format "MMDDYYYY" (example: "03032003").
 
@@ -319,7 +332,11 @@ For question 3(d), we need to move the entire folder to zip with password of cur
      zip -rm -P $(date '+%m%d%Y') Koleksi.zip Kucing_* Kelinci_*
      
 For `-rm` means that we will recursively explore the folder so all the files in the folder also move into zip and also deletes target directories/files after successfully making the zip file.  And `-P` means that password for the zip file.
-     
+   
+**RESULT**
+![3d-1](https://user-images.githubusercontent.com/73649094/113501573-5fac9400-9550-11eb-8b49-8ab143bbac3b.png)
+
+
 e) Because kuuhaku only met Steven during college, which is every day except Saturday and Sunday, from 7 am to 6 pm, he asks you to zip the collection during college, apart from the time mentioned, he wants the collection unzipped. and no other zip files exist.
 
 In question (e), we need to automatically zip and unzip the entire folder in given time. So, I make a little modification from question (d).
@@ -343,3 +360,8 @@ And we create the crontab to automatically run zip and unzip script
      0 7,18 * * 1-5 /home/alifai/Documents/Shift1/soal3d.sh
      
 It means "At 07:00 and 18:00 on every day-of-week from Monday through Friday."
+
+**RESULT**
+![3e1](https://user-images.githubusercontent.com/73649094/113501623-caf66600-9550-11eb-930e-23147b910881.png)
+
+![3e2](https://user-images.githubusercontent.com/73649094/113501624-cfbb1a00-9550-11eb-8fc3-8b04ffe005fe.png)
