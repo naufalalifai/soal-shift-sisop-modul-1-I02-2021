@@ -1,3 +1,1 @@
-0 7 * * 1-5
-
-0 18 * * 1-5
+0 7,18 * * 1-5 /home/alifai/Documents/Shift1/soal3d.sh
