@@ -201,7 +201,7 @@ a) Make a script to download 23 images from "https://loremflickr.com/320/240/kit
      awk -F / '/Location: / {print $4}' Foto.log > tmploc.txt
      awk 'END{print}' tmploc.txt >> loc.txt
      
-   To check whether there is duplicate or not we use 'uniq -d' to count only duplicate line.
+   To check whether there is duplicate or not we use `uniq -d` to count only duplicate line.
    
      count=$(sort loc.txt | uniq -d)
      
@@ -253,17 +253,93 @@ b) Because Kuuhaku is too lazy to run the script manually, he also asks you to r
 
      0 20 1-31/7,2-31/4 * * /home/alifai/Documents/Shift1/soal3b.sh
 
-  It means “At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month from 2 through 31.”
+  It means "At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month from 2 through 31."
 
 c) To prevent Kuuhaku getting bored with pictures of kittens, he also asked you to download rabbit images from "https://loremflickr.com/320/240/bunny". Kuuhaku asks you to download pictures of cats and rabbits alternately (the first one is free. example: 30th cat > 31st rabbit > 1st cat > ...). To distinguish between folders containing cat pictures and rabbit pictures, the folder names are prefixed with "Kucing_" or "Kelinci_" (example: "Kucing_13-03-2023").
      
-     #3c
+In question (c) we download alternately between two links, cat or rabbit. And then store it into folder with the name cat or rabbit according to downloaded images. First, we need to get the yesterday’s date and today’s date.
+ 
+     yesterday=$(date -d '-1 day' '+%d-%m-%Y')
+     now=$(date +%d-%m-%Y)
      
+For me, I want to check first if there are folder named Kucing with yesterday’s date. If there is, we will continue to download rabbit images. If not there, we will continue to download cat images. It is almost the same with number (a) but adding the branching for alternately download the cat or rabbit images.
+
+     for ((img=1; img<=23; img=img+1))
+     do
+	     if [[ -d "/home/alifai/Documents/Shift1/Kucing_$yesterday" ]]
+	     then
+  		     wget -O "Kumpulan_$img" https://loremflickr.com/320/240/bunny -a Foto.log
+               
+  		     awk -F / '/Location: / {print $4}' Foto.log > tmploc.txt
+  		     awk 'END{print}' tmploc.txt >> loc.txt
+  		     count=$(sort loc.txt | uniq -d)
+
+  		     if [[ $count>0 ]]
+  		     then
+     			sed -i '$d' loc.txt
+     			rm "Kumpulan_$img"
+  		     fi
+	     else
+		     wget -O "Kumpulan_$img" https://loremflickr.com/320/240/kitten -a Foto.log
+
+               awk -F / '/Location: / {print $4}' Foto.log > tmploc.txt
+               awk 'END{print}' tmploc.txt >> loc.txt
+               count=$(sort loc.txt | uniq -d)
+
+               if [[ $count>0 ]]
+               then
+                    sed -i '$d' loc.txt
+                    rm "Kumpulan_$img"
+               fi
+	     fi
+     done
+     rm tmploc.txt
+     rm loc.txt
+
+Next, we take the same steps from previous branching to determine the folder name. And make the folder
+
+     if [[ -d "/home/alifai/Documents/Shift1/Kucing_$yesterday" ]]
+     then
+          dir="Kelinci_$now"
+     else
+          dir="Kucing_$now"
+     fi
+     
+     mkdir /home/alifai/Documents/Shift1/$dir
+     
+Then, move the downloaded images and log to the folder.
+
+     mv Kumpulan_* /home/alifai/Documents/Shift1/$dir
+     mv Foto.log /home/alifai/Documents/Shift1/$dir
+
 d) To secure his Photo collection from Steven, Kuuhaku asked you to create a script that will move the entire folder to zip which is named "Koleksi.zip" and lock the zip with a password in the form of the current date with the format "MMDDYYYY" (example: "03032003").
 
-     #3d
+For question 3(d), we need to move the entire folder to zip with password of current date.
+
+     zip -rm -P $(date '+%m%d%Y') Koleksi.zip Kucing_* Kelinci_*
+     
+For `-rm` means that we will recursively explore the folder so all the files in the folder also move into zip and also deletes target directories/files after successfully making the zip file.  And `-P` means that password for the zip file.
      
 e) Because kuuhaku only met Steven during college, which is every day except Saturday and Sunday, from 7 am to 6 pm, he asks you to zip the collection during college, apart from the time mentioned, he wants the collection unzipped. and no other zip files exist.
 
-     #3e
+In question (e), we need to automatically zip and unzip the entire folder in given time. So, I make a little modification from question (d).
+     
+We will have branching when the current time is 7 o’clock then will execute `zip` 
 
+     if [ $(date +%H%M) == '0700' ]
+     then
+	     zip -rm -P $(date '+%m%d%Y') Koleksi.zip Kucing_* Kelinci_*
+          
+But if the current time is 18 o’clock then will execute the `unzip` and remove the zip file. `unzip -P` means that we will use the current date as a password to extract the zip file.
+
+     elif [ $(date +%H%M) == '1800' ]
+     then
+	     unzip -P $(date '+%m%d%Y') Koleksi.zip 
+	     rm Koleksi.zip
+     fi
+
+And we create the crontab to automatically run zip and unzip script 
+
+     0 7,18 * * 1-5 /home/alifai/Documents/Shift1/soal3d.sh
+     
+It means "At 07:00 and 18:00 on every day-of-week from Monday through Friday."
