@@ -173,7 +173,8 @@ d). TokoShiSop divides the sales region into four parts: Central, East, South, a
      
      and here's for the result:
      
-<p align="center"><img width="714" alt="Screen Shot 2021-04-04 at 10 45 25" src="https://user-images.githubusercontent.com/73428164/113497978-de92d400-9532-11eb-9588-b8a66c8497f5.png"></p>
+<p align="center"><img width="734" alt="Screen Shot 2021-04-04 at 16 24 34" src="https://user-images.githubusercontent.com/73428164/113504434-3f85d080-9562-11eb-9c54-443728f9a3c6.png">
+</p>
 
      
 e). You are expected to be able to create a script that will produce a file “Hasil.txt” 
@@ -182,7 +183,8 @@ e). You are expected to be able to create a script that will produce a file “H
      
      here's the Hasil.txt : 
      
-<p align="center"><img width="797" alt="Screen Shot 2021-04-04 at 10 46 41" src="https://user-images.githubusercontent.com/73428164/113497988-0c781880-9533-11eb-81d2-1fd9d48bcd49.png"></p>
+<p align="center"><img width="797" alt="Screen Shot 2021-04-04 at 16 24 17" src="https://user-images.githubusercontent.com/73428164/113504441-4b719280-9562-11eb-981b-5b30e9071746.png">
+</p>
 
      
 ## Question 3:
